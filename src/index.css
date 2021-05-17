@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.main {
+  text-align: center;
+}
+
+.results {
+  text-align: center;
+  margin-top: 3vh;
+}
+
+.circle {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  flex-flow: column wrap;
+  vertical-align: top;
+}
+
+.big {
+  width: 320px;
+  height: 320px;
+}
+.char-big {
+  font-size: 12em;
+  line-height: 2em;
+}
+.small {
+  width: 70px;
+  height: 70px;
+  margin: 2px;
+}
+.char-small {
+  font-size: 3.0em;
+  line-height: 1.0em;
+}
+
+.purple {
+  color: #fff;
+  border: 4px solid rgb(134, 140, 228);
+  background: rgb(134, 140, 228);
+}
+.purple-skeleton {
+  color: rgb(134, 140, 228);
+  border: 4px solid rgb(134, 140, 228);
+}
+
+.skyblue {
+  color: #fff;
+  border: 4px solid skyblue;
+  background: skyblue;
+}
+.skyblue-skeleton {
+  color: skyblue;
+  border: 4px solid skyblue;
+}
+
+button {
+  margin: 0 20px 40px;
+  padding: 0.7em 1.6em;
+  border: none;
+  box-sizing: border-box;
+  width: 200px;
+  display: inline-block;
+  font-size: 170%;
+  position: relative;
+  cursor: pointer;
+}
+button::before
+button::after {
+  box-sizing: border-box;
+}
+
+.button-bingo {
+  border: 3px solid rgb(45, 191, 100);
+  background-color: rgba(45, 191, 100, 1);
+  color: #fff;
+  transition: .6s all;
+  position: absolute;
+  margin-left: 68vw;
+  margin-top: 18vh;
+  border-radius: 4px;
+  font-size: 32px;
+}
+.button-bingo:hover {
+  border: 3px solid rgb(45, 191, 100);
+  background-color: rgba(45, 191, 100, .0);
+  color: rgba(45, 191, 100, 1);
+}
+
+.button-clear {
+  border: 3px solid rgb(237, 86, 80);
+  background-color: rgb(237, 86, 80);
+  color: #fff;
+  transition: .6s all;
+  position: absolute;
+  margin-left: 1.5vw;
+  margin-top: 2vh;
+  width: 20%;
+  display: inline-block;
+  font-size: 140%;
+  padding: 0.5em 0.8em;
+  border-radius: 4px;
+}
+.button-clear:hover {
+  border: 3px solid rgb(237, 86, 80);
+  background-color: rgba(237, 86, 80, .0);
+  color: rgba(237, 86, 80, 1);
+}
+
+.config-button {
+  text-decoration: none;
+  font-size: 2.3em;
+  position: fixed;
+  margin-left: 93vw;
+  margin-top: 0.1vh;
+  color: #fff;
+}
+
+.restricted-percentage {
+  text-align: right;
+  padding: 1% 1%;
+  font-size: 18px;
+  color: gray;
+}
+
+.restricted-list {
+  padding: 1% 3%;
+  font-size: 20px;
+  color: gray;
+}
