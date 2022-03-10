@@ -3,6 +3,7 @@
 ## これなに？
 ランダム封印縛りのためのアイテム封印ビンゴ
 
+[Random-Bingo](https://random-bingo.netlify.app/)
 
 ## 使い方
 ### ルーレットを開始/停止する
