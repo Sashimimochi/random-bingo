@@ -55,7 +55,7 @@ export default function RestrictedItems(props) {
             setItems(data);
             setCount(initItemCount);
         }
-    }, [props]);
+    }, [data, init, initItemCount, items.length]);
 
     const filterList = (e) => {
         const updateList = data.filter((item) => {

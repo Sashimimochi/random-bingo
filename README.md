@@ -1,7 +1,46 @@
-# Random-Bingo
+# ランダム封印縛りビンゴ
 
-## Usage
+## これなに？
+ランダム封印縛りのためのアイテム封印ビンゴ
+
+
+## 使い方
+### ルーレットを開始/停止する
+Start/Stopボタン
+### ルーレットをリセットする
+Resetボタン
+
+### リストを変更する
+#### Min,Maxを指定する
+
+#### Excelファイルから設定する
+Excelファイルをアップロードすることでルーレットの内容を設定することができます。
+※サーバ上にアップロードしたファイルが保存されることはありませんが、個人情報などデリケートなデータはアップロードしないようにしてください。
+
+1. uploadボタンを押す
+1. 起動したダイアログボックスからExcelをアップロードする
+1. applyボタンを押す
+1. closeを押してサイドバーを閉じる
+
+アップロードするExcelファイルは以下のようなフォーマットにしてください。
+
+|name|description|
+|:-|:-|
+|aaa|AAA|
+
+
+### 現在値を保存する
+ブラウザを閉じたり、リロードすると状態がリセットされます。
+そのため、中断して、前の続きから再開するには今の状態を保存してください。
+※Excelファイルでルーレットの設定をした時だけ保存できます。
+
+1. download
+
+## 自分でホストして使う場合
 ```bash
-docker-compose up -d
-docker-compose exec random-bingo yarn start
+yarn start
 ```
+
+## 参考リポジトリ
+
+[nishiurahiroki/bingo\-game\-made\-with\-react](https://github.com/nishiurahiroki/bingo-game-made-with-react)

@@ -101,7 +101,7 @@ class BingoGame extends React.Component {
   }
 
   componentDidUpdate() {
-    this.state.doButton = this.state.nowDrawing ?
+    this.setState({doButton: this.state.nowDrawing}) ?
     <DoButton label="Stop" onClick={this.finishDrawing.bind(this)}  /> :
     <DoButton label="Start" onClick={this.startDrawing.bind(this)} />
   }
