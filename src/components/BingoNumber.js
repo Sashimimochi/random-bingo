@@ -1,15 +1,13 @@
-import React from 'react'
+const SMALL_FONT_STYLE = { fontSize: '2.3em' }
+const BIG_FONT_STYLE = { fontSize: '11.2em' }
 
-const SMALL_FONT_STYLE = {fontSize: '2.3em'}
-const BIG_FONT_STYLE = {fontSize: '11.2em'}
-
-const BingoNumber = props => {
-    const size = props.size || 'small'
-    const value = props.value || ''
-    const skeleton = props.isHit ? '' : '-skeleton'
+export const BingoNumber = (props) => {
+    const value = props.value || '';
+    const size = props.size || 'small';
+    const skeleton = props.isHit ? '' : '-skeletion';
 
     const fontStyle = ((value, size) => {
-        if(100 > value) {
+        if (100 > value) {
             return {}
         }
 
@@ -28,7 +26,5 @@ const BingoNumber = props => {
                 {value}
             </div>
         </div>
-    )
+    );
 }
-
-export default BingoNumber
