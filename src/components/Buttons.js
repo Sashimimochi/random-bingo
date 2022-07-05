@@ -5,6 +5,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import ClearIcon from '@mui/icons-material/Clear';
 import { createBingoNumbers, DrawNumber, Reel } from "./Bingo";
 import { useState } from "react";
 import { BingoNumber } from "./BingoNumber";
@@ -60,8 +64,9 @@ export const SaveButton = (props) => {
             style={{ marginTop: "4.0vh" }}
             fullWidth={true}
             onClick={() => saveAndRestartConfigArea()}
+            startIcon={<RefreshIcon />}
         >
-            <RefreshIcon /> save &amp; restart
+            save &amp; restart
         </PrimaryButton>
     );
 }
@@ -74,8 +79,9 @@ export const CloseButton = (props) => {
             style={{ marginTop: "4.0vh" }}
             fullWidth={true}
             onClick={() => closeConfigArea(false)}
+            startIcon={<CloseIcon />}
         >
-            <CloseIcon /> close
+            close
         </SecondaryButton>
     );
 }
@@ -85,8 +91,9 @@ export const ApplyButton = (props) => {
         <SuccessButton
             fullWidth={true}
             onClick={() => console.log("apply")}
+            startIcon={<CheckCircleIcon />}
         >
-            <CheckCircleIcon /> apply
+            apply
         </SuccessButton>
     );
 }
@@ -113,6 +120,7 @@ export const ClearButton = (props) => {
             variant="contained"
             color="secondary"
             onClick={() => resetAll()}
+            startIcon={<ClearIcon />}
         >
             Clear
         </SecondaryButton>
@@ -157,6 +165,7 @@ export const LotteryButton = (props) => {
                 };
                 Reel(min, max, setCurrentNumber, setTimeId);
             }}
+            startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
         >
             {reel ? "stop" : "start"}
         </StartButton>
@@ -169,8 +178,10 @@ export const UploadButton = (props) => {
         <SuccessButton
             variant="contained"
             fullWidth={true}
-            onClick={() => handleTriggerReadFile()}>
-            <UploadFileIcon /> upload
+            onClick={() => handleTriggerReadFile()}
+            startIcon={<UploadFileIcon />}
+        >
+            upload
         </SuccessButton>
     );
 }
@@ -183,8 +194,20 @@ export const DownloadButton = (props) => {
             variant="contained"
             fullWidth={true}
             onClick={() => handleWriteFile(data, hitNumbers)}
+            startIcon={<FileDownloadIcon />}
         >
-            <FileDownloadIcon /> download
+            download
         </InfoButton>
+    );
+}
+
+export const GitHubButton = () => {
+    return(
+        <IconButton
+            target="_blank"
+            href="https://github.com/Sashimimochi/random-bingo"
+        >
+            <GitHubIcon />
+        </IconButton>
     );
 }
