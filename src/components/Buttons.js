@@ -85,8 +85,6 @@ export const CloseButton = (props) => {
     );
 }
 
-
-
 export const ConfigButton = (props) => {
     const openMenu = props.openMenu;
     return (
