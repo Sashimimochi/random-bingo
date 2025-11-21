@@ -100,13 +100,14 @@ export const ApplyButton = (props) => {
 
 export const ConfigButton = (props) => {
     const openMenu = props.openMenu;
+    const open = props.open;
     return (
         <IconButton
             size="large"
             edge="end"
             color="inherit"
             aria-label="menu"
-            onClick={() => openMenu(true)}
+            onClick={() => openMenu(!open)}
         >
             <MenuIcon fontSize="large" />
         </IconButton>
