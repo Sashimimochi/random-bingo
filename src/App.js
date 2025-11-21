@@ -107,7 +107,7 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={myTheme}>
-        <HeaderItems openMenu={setOpen} />
+        <HeaderItems openMenu={setOpen} open={open} />
         <ConfigArea
           min={min}
           max={max}
