@@ -154,8 +154,10 @@ export const LotteryButton = (props) => {
     
     const handleDrawCountChange = (e) => {
         const value = parseInt(e.target.value, 10);
-        if (value > 0) {
+        if (!isNaN(value) && value > 0) {
             setDrawCount(value);
+        } else if (e.target.value === '') {
+            setDrawCount(1);
         }
     };
     
@@ -179,15 +181,15 @@ export const LotteryButton = (props) => {
                     if (reel) {
                         clearInterval(timeId);
                         const newHitNumbers = [...hitNumbers];
-                        const currentBingoNumbers = createBingoNumbers(min, max, newHitNumbers);
-                        const actualDrawCount = Math.min(drawCount, Object.keys(currentBingoNumbers).length);
+                        const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
                         
                         for (let i = 0; i < actualDrawCount; i++) {
-                            const updatedBingoNumbers = createBingoNumbers(min, max, newHitNumbers);
-                            const hitNumber = DrawNumber(updatedBingoNumbers);
-                            if (hitNumber !== undefined) {
-                                newHitNumbers.push(hitNumber);
+                            const availableNumbers = createBingoNumbers(min, max, newHitNumbers);
+                            const hitNumber = DrawNumber(availableNumbers);
+                            if (hitNumber === undefined) {
+                                break;
                             }
+                            newHitNumbers.push(hitNumber);
                         }
                         
                         setHitNumbers(newHitNumbers);
