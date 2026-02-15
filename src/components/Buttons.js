@@ -9,10 +9,14 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import ClearIcon from '@mui/icons-material/Clear';
-import { createBingoNumbers, DrawNumber, Reel } from "./Bingo";
+import { createBingoNumbers, DrawNumber } from "./Bingo";
 import { useState } from "react";
 import { BingoNumber } from "./BingoNumber";
 import { handleWriteFile } from "./ExcelHander";
+
+const Lottery = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
 const PrimaryButton = styled(Button)(({ theme }) => ({
     color: "white",
@@ -142,7 +146,7 @@ const StartButton = styled(Button)(({ theme }) => ({
 export const LotteryButton = (props) => {
     const min = props.min;
     const max = props.max;
-    const setCurrentNumber = props.setCurrentNumber;
+    const setCurrentNumbers = props.setCurrentNumbers;
     const reel = props.reel;
     const setReel = props.setReel;
     const hitNumbers = props.hitNumbers;
@@ -182,6 +186,7 @@ export const LotteryButton = (props) => {
                         clearInterval(timeId);
                         const newHitNumbers = [...hitNumbers];
                         const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
+                        const drawnNumbers = [];
                         
                         for (let i = 0; i < actualDrawCount; i++) {
                             const availableNumbers = createBingoNumbers(min, max, newHitNumbers);
@@ -190,16 +195,27 @@ export const LotteryButton = (props) => {
                                 break;
                             }
                             newHitNumbers.push(hitNumber);
+                            drawnNumbers.push(hitNumber);
                         }
                         
                         setHitNumbers(newHitNumbers);
-                        if (newHitNumbers.length > hitNumbers.length) {
-                            const lastHitNumber = newHitNumbers[newHitNumbers.length - 1];
-                            setCurrentNumber(<BingoNumber size="big" isHit={true} value={lastHitNumber} />);
+                        if (drawnNumbers.length > 0) {
+                            const numberComponents = drawnNumbers.map((num, index) => (
+                                <BingoNumber key={index} size="big" isHit={true} value={num} />
+                            ));
+                            setCurrentNumbers(numberComponents);
                         }
                         return
                     };
-                    Reel(min, max, setCurrentNumber, setTimeId);
+                    const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
+                    const newTimeId = setInterval(() => {
+                        const randomNumbers = [];
+                        for (let i = 0; i < actualDrawCount; i++) {
+                            randomNumbers.push(<BingoNumber key={i} size="big" isHit={true} value={Lottery(min, max)} />);
+                        }
+                        setCurrentNumbers(randomNumbers);
+                        setTimeId(newTimeId);
+                    }, 85);
                 }}
                 startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
             >

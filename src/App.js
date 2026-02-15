@@ -53,7 +53,7 @@ function App() {
   const [excelData, setExcelData] = useState(initData(min, max));
   const [maxSize, setMaxSize] = useState((excelData) ? excelData.length : max);
   const [open, setOpen] = useState(false);
-  const [currentNumber, setCurrentNumber] = useState(<BingoNumber size="big" isHit={true} value={0} />);
+  const [currentNumbers, setCurrentNumbers] = useState([<BingoNumber key={0} size="big" isHit={true} value={0} />]);
   const [reel, setReel] = useState(false);
   const [hitNumbers, setHitNumbers] = useState([]);
   const [reSettingMinError, setReSettingMinError] = useState("");
@@ -101,7 +101,7 @@ function App() {
     const shouldReset = window.confirm("抽選結果をすべてクリアしてよろしいですか？")
     if (shouldReset) {
       setHitNumbers(newHitNumbers);
-      setCurrentNumber(<BingoNumber size="big" isHit={true} value={0} />);
+      setCurrentNumbers([<BingoNumber key={0} size="big" isHit={true} value={0} />]);
     }
   }
 
@@ -128,7 +128,7 @@ function App() {
         <LotteryButton
           min={min}
           max={max}
-          setCurrentNumber={setCurrentNumber}
+          setCurrentNumbers={setCurrentNumbers}
           reel={reel}
           setReel={setReel}
           hitNumbers={hitNumbers}
@@ -137,7 +137,7 @@ function App() {
           setDrawCount={setDrawCount}
         />
         <HitItemDetails
-          currentNumber={currentNumber}
+          currentNumbers={currentNumbers}
           hitSize={hitNumbers.length}
           maxSize={maxSize}
           hitNumbers={hitNumbers}
