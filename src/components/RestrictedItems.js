@@ -52,7 +52,7 @@ function RestrictedItems(props) {
         setSearchKeyword("");
         setItems(data);
         setCount(data.length);
-    }, [data]);
+    }, [hitNumbers, data]);
 
     const filterList = (e) => {
         const keyword = e.target.value;
@@ -69,9 +69,8 @@ function RestrictedItems(props) {
         const updateList = data.filter((item) => {
             return item.toLowerCase().search(keyword.toLowerCase()) !== -1;
         });
-        const count = (!!updateList) ? updateList.length : 0;
         setItems(updateList);
-        setCount(count);
+        setCount(updateList.length);
     }
 
     return (
