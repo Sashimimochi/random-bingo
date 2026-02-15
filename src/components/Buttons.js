@@ -10,11 +10,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import ClearIcon from '@mui/icons-material/Clear';
 import { createBingoNumbers, DrawNumber } from "./Bingo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BingoNumber } from "./BingoNumber";
 import { handleWriteFile } from "./ExcelHander";
 
-const Lottery = (min, max) => {
+const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -156,6 +156,14 @@ export const LotteryButton = (props) => {
     const [timeId, setTimeId] = useState();
     const bingoNumbers = createBingoNumbers(min, max, hitNumbers);
     
+    useEffect(() => {
+        return () => {
+            if (timeId) {
+                clearInterval(timeId);
+            }
+        };
+    }, [timeId]);
+    
     const handleDrawCountChange = (e) => {
         const value = parseInt(e.target.value, 10);
         if (!isNaN(value) && value > 0) {
@@ -211,7 +219,7 @@ export const LotteryButton = (props) => {
                     const newTimeId = setInterval(() => {
                         const randomNumbers = [];
                         for (let i = 0; i < actualDrawCount; i++) {
-                            randomNumbers.push(<BingoNumber key={i} size="big" isHit={true} value={Lottery(min, max)} />);
+                            randomNumbers.push(<BingoNumber key={i} size="big" isHit={true} value={getRandomNumber(min, max)} />);
                         }
                         setCurrentNumbers(randomNumbers);
                         setTimeId(newTimeId);
