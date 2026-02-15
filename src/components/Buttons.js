@@ -215,7 +215,7 @@ export const LotteryButton = (props) => {
                             setCurrentNumbers(numberComponents);
                             setRecentDrawnNumbers(drawnNumbers);
                         }
-                        return
+                        return;
                     };
                     const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
                     const newTimeId = setInterval(() => {

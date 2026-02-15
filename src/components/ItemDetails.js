@@ -38,9 +38,9 @@ const HitItemDetails = (props) => {
                 gap: 2,
                 marginTop: 2 
             }}>
-                {numbersToDisplay.map((itemNo, index) => (
+                {numbersToDisplay.map((itemNo) => (
                     <ItemTable
-                        key={index}
+                        key={itemNo}
                         itemNo={itemNo}
                         itemList={itemList}
                     />
