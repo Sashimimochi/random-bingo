@@ -1,4 +1,4 @@
-import { Button, IconButton, styled } from "@mui/material";
+import { Button, IconButton, styled, TextField, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,10 +8,14 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import ClearIcon from '@mui/icons-material/Clear';
-import { createBingoNumbers, DrawNumber, Reel } from "./Bingo";
-import { useState } from "react";
+import { createBingoNumbers, DrawNumber } from "./Bingo";
+import { useState, useEffect } from "react";
 import { BingoNumber } from "./BingoNumber";
 import { handleWriteFile } from "./ExcelHander";
+
+const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
 const PrimaryButton = styled(Button)(({ theme }) => ({
     color: "white",
@@ -129,34 +133,92 @@ const StartButton = styled(Button)(({ theme }) => ({
 export const LotteryButton = (props) => {
     const min = props.min;
     const max = props.max;
-    const setCurrentNumber = props.setCurrentNumber;
+    const setCurrentNumbers = props.setCurrentNumbers;
     const reel = props.reel;
     const setReel = props.setReel;
     const hitNumbers = props.hitNumbers;
     const setHitNumbers = props.setHitNumbers;
+    const drawCount = props.drawCount;
+    const setDrawCount = props.setDrawCount;
+    const setRecentDrawnNumbers = props.setRecentDrawnNumbers;
     const [timeId, setTimeId] = useState();
     const bingoNumbers = createBingoNumbers(min, max, hitNumbers);
+    
+    useEffect(() => {
+        return () => {
+            if (timeId) {
+                clearInterval(timeId);
+            }
+        };
+    }, [timeId]);
+    
+    const handleDrawCountChange = (e) => {
+        const value = parseInt(e.target.value, 10);
+        if (!isNaN(value) && value > 0) {
+            setDrawCount(value);
+        } else if (e.target.value === '') {
+            setDrawCount(1);
+        }
+    };
+    
     return (
-        <StartButton
-            onClick={() => {
-                if (Object.keys(bingoNumbers).length === 0) {
-                    return
-                }
-                setReel(!reel);
-                if (reel) {
-                    clearInterval(timeId);
-                    const hitNumber = DrawNumber(bingoNumbers);
-                    hitNumbers.push(hitNumber);
-                    setHitNumbers(hitNumbers);
-                    setCurrentNumber(<BingoNumber size="big" isHit={true} value={hitNumber} />)
-                    return
-                };
-                Reel(min, max, setCurrentNumber, setTimeId);
-            }}
-            startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
-        >
-            {reel ? "stop" : "start"}
-        </StartButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+            <TextField
+                type="number"
+                label="抽選数"
+                value={drawCount}
+                onChange={handleDrawCountChange}
+                inputProps={{ min: 1, max: Object.keys(bingoNumbers).length }}
+                sx={{ width: '120px' }}
+                size="small"
+            />
+            <StartButton
+                onClick={() => {
+                    if (Object.keys(bingoNumbers).length === 0) {
+                        return
+                    }
+                    setReel(!reel);
+                    if (reel) {
+                        clearInterval(timeId);
+                        const newHitNumbers = [...hitNumbers];
+                        const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
+                        const drawnNumbers = [];
+                        
+                        for (let i = 0; i < actualDrawCount; i++) {
+                            const availableNumbers = createBingoNumbers(min, max, newHitNumbers);
+                            const hitNumber = DrawNumber(availableNumbers);
+                            if (hitNumber === undefined) {
+                                break;
+                            }
+                            newHitNumbers.push(hitNumber);
+                            drawnNumbers.push(hitNumber);
+                        }
+                        
+                        setHitNumbers(newHitNumbers);
+                        if (drawnNumbers.length > 0) {
+                            const numberComponents = drawnNumbers.map((num, index) => (
+                                <BingoNumber key={index} size="big" isHit={true} value={num} />
+                            ));
+                            setCurrentNumbers(numberComponents);
+                            setRecentDrawnNumbers(drawnNumbers);
+                        }
+                        return;
+                    };
+                    const actualDrawCount = Math.min(drawCount, Object.keys(bingoNumbers).length);
+                    const newTimeId = setInterval(() => {
+                        const randomNumbers = [];
+                        for (let i = 0; i < actualDrawCount; i++) {
+                            randomNumbers.push(<BingoNumber key={i} size="big" isHit={true} value={getRandomNumber(min, max)} />);
+                        }
+                        setCurrentNumbers(randomNumbers);
+                        setTimeId(newTimeId);
+                    }, 85);
+                }}
+                startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
+            >
+                {reel ? "stop" : "start"}
+            </StartButton>
+        </Box>
     );
 }
 

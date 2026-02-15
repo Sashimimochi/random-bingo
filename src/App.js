@@ -53,11 +53,13 @@ function App() {
   const [excelData, setExcelData] = useState(initData(min, max));
   const [maxSize, setMaxSize] = useState((excelData) ? excelData.length : max);
   const [open, setOpen] = useState(false);
-  const [currentNumber, setCurrentNumber] = useState(<BingoNumber size="big" isHit={true} value={0} />);
+  const [currentNumbers, setCurrentNumbers] = useState([<BingoNumber key={0} size="big" isHit={true} value={0} />]);
   const [reel, setReel] = useState(false);
   const [hitNumbers, setHitNumbers] = useState([]);
+  const [recentDrawnNumbers, setRecentDrawnNumbers] = useState([]);
   const [reSettingMinError, setReSettingMinError] = useState("");
   const [reSettingMaxError, setReSettingMaxError] = useState("");
+  const [drawCount, setDrawCount] = useState(1);
 
   const saveAndRestartConfigArea = (data, hitNumbers) => {
     const newMin = data !== undefined ? data[0].id : resetMin
@@ -100,7 +102,8 @@ function App() {
     const shouldReset = window.confirm("抽選結果をすべてクリアしてよろしいですか？")
     if (shouldReset) {
       setHitNumbers(newHitNumbers);
-      setCurrentNumber(<BingoNumber size="big" isHit={true} value={0} />);
+      setRecentDrawnNumbers([]);
+      setCurrentNumbers([<BingoNumber key={0} size="big" isHit={true} value={0} />]);
     }
   }
 
@@ -127,17 +130,21 @@ function App() {
         <LotteryButton
           min={min}
           max={max}
-          setCurrentNumber={setCurrentNumber}
+          setCurrentNumbers={setCurrentNumbers}
           reel={reel}
           setReel={setReel}
           hitNumbers={hitNumbers}
           setHitNumbers={setHitNumbers}
+          drawCount={drawCount}
+          setDrawCount={setDrawCount}
+          setRecentDrawnNumbers={setRecentDrawnNumbers}
         />
         <HitItemDetails
-          currentNumber={currentNumber}
+          currentNumbers={currentNumbers}
           hitSize={hitNumbers.length}
           maxSize={maxSize}
           hitNumbers={hitNumbers}
+          recentDrawnNumbers={recentDrawnNumbers}
           itemList={excelData}
         />
         <BingoNumbers
