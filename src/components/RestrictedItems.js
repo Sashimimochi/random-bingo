@@ -43,15 +43,13 @@ function RestrictedItems(props) {
     const itemSize = 46;
 
     const [items, setItems] = useState(data);
-    const [itemCount, setCount] = useState(data.length);
     const [searchKeyword, setSearchKeyword] = useState("");
 
-    // Update items when hitNumbers changes (new item sealed by roulette)
+    // Update items when hitNumbers or data changes (new item sealed by roulette or data updated)
     useEffect(() => {
-        // Reset search and show all items when hitNumbers changes
+        // Reset search and show all items
         setSearchKeyword("");
         setItems(data);
-        setCount(data.length);
     }, [hitNumbers, data]);
 
     const filterList = (e) => {
@@ -61,16 +59,15 @@ function RestrictedItems(props) {
         // If search box is empty, show all items
         if (keyword === "") {
             setItems(data);
-            setCount(data.length);
             return;
         }
         
-        // Otherwise, filter by keyword
+        // Otherwise, filter by keyword using case-insensitive substring match
+        const keywordLower = keyword.toLowerCase();
         const updateList = data.filter((item) => {
-            return item.toLowerCase().search(keyword.toLowerCase()) !== -1;
+            return item.toLowerCase().includes(keywordLower);
         });
         setItems(updateList);
-        setCount(updateList.length);
     }
 
     return (
@@ -90,7 +87,7 @@ function RestrictedItems(props) {
                         />
                     </CustomForm>
                 </div>
-                <FixedSizeList height={400} width={300} itemSize={itemSize} itemCount={itemCount} itemData={items}>
+                <FixedSizeList height={400} width={300} itemSize={itemSize} itemCount={items.length} itemData={items}>
                     {renderRow}
                 </FixedSizeList>
             </CustomBox>
