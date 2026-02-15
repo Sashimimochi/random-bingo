@@ -2,7 +2,6 @@ import { Button, IconButton, styled } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -83,18 +82,6 @@ export const CloseButton = (props) => {
         >
             close
         </SecondaryButton>
-    );
-}
-
-export const ApplyButton = (props) => {
-    return (
-        <SuccessButton
-            fullWidth={true}
-            onClick={() => console.log("apply")}
-            startIcon={<CheckCircleIcon />}
-        >
-            apply
-        </SuccessButton>
     );
 }
 
