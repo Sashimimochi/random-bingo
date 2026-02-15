@@ -153,6 +153,7 @@ export const LotteryButton = (props) => {
     const setHitNumbers = props.setHitNumbers;
     const drawCount = props.drawCount;
     const setDrawCount = props.setDrawCount;
+    const setRecentDrawnNumbers = props.setRecentDrawnNumbers;
     const [timeId, setTimeId] = useState();
     const bingoNumbers = createBingoNumbers(min, max, hitNumbers);
     
@@ -212,6 +213,7 @@ export const LotteryButton = (props) => {
                                 <BingoNumber key={index} size="big" isHit={true} value={num} />
                             ));
                             setCurrentNumbers(numberComponents);
+                            setRecentDrawnNumbers(drawnNumbers);
                         }
                         return
                     };
