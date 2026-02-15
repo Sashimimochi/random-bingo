@@ -1,4 +1,4 @@
-import { Button, IconButton, styled } from "@mui/material";
+import { Button, IconButton, styled, TextField, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CloseIcon from "@mui/icons-material/Close";
@@ -147,29 +147,63 @@ export const LotteryButton = (props) => {
     const setReel = props.setReel;
     const hitNumbers = props.hitNumbers;
     const setHitNumbers = props.setHitNumbers;
+    const drawCount = props.drawCount;
+    const setDrawCount = props.setDrawCount;
     const [timeId, setTimeId] = useState();
     const bingoNumbers = createBingoNumbers(min, max, hitNumbers);
+    
+    const handleDrawCountChange = (e) => {
+        const value = parseInt(e.target.value, 10);
+        if (value > 0) {
+            setDrawCount(value);
+        }
+    };
+    
     return (
-        <StartButton
-            onClick={() => {
-                if (Object.keys(bingoNumbers).length === 0) {
-                    return
-                }
-                setReel(!reel);
-                if (reel) {
-                    clearInterval(timeId);
-                    const hitNumber = DrawNumber(bingoNumbers);
-                    hitNumbers.push(hitNumber);
-                    setHitNumbers(hitNumbers);
-                    setCurrentNumber(<BingoNumber size="big" isHit={true} value={hitNumber} />)
-                    return
-                };
-                Reel(min, max, setCurrentNumber, setTimeId);
-            }}
-            startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
-        >
-            {reel ? "stop" : "start"}
-        </StartButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+            <TextField
+                type="number"
+                label="抽選数"
+                value={drawCount}
+                onChange={handleDrawCountChange}
+                inputProps={{ min: 1, max: Object.keys(bingoNumbers).length }}
+                sx={{ width: '120px' }}
+                size="small"
+            />
+            <StartButton
+                onClick={() => {
+                    if (Object.keys(bingoNumbers).length === 0) {
+                        return
+                    }
+                    setReel(!reel);
+                    if (reel) {
+                        clearInterval(timeId);
+                        const newHitNumbers = [...hitNumbers];
+                        const currentBingoNumbers = createBingoNumbers(min, max, newHitNumbers);
+                        const actualDrawCount = Math.min(drawCount, Object.keys(currentBingoNumbers).length);
+                        
+                        for (let i = 0; i < actualDrawCount; i++) {
+                            const updatedBingoNumbers = createBingoNumbers(min, max, newHitNumbers);
+                            const hitNumber = DrawNumber(updatedBingoNumbers);
+                            if (hitNumber !== undefined) {
+                                newHitNumbers.push(hitNumber);
+                            }
+                        }
+                        
+                        setHitNumbers(newHitNumbers);
+                        if (newHitNumbers.length > hitNumbers.length) {
+                            const lastHitNumber = newHitNumbers[newHitNumbers.length - 1];
+                            setCurrentNumber(<BingoNumber size="big" isHit={true} value={lastHitNumber} />);
+                        }
+                        return
+                    };
+                    Reel(min, max, setCurrentNumber, setTimeId);
+                }}
+                startIcon={reel ? <StopIcon />: <PlayArrowIcon />}
+            >
+                {reel ? "stop" : "start"}
+            </StartButton>
+        </Box>
     );
 }
 

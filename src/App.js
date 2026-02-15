@@ -58,6 +58,7 @@ function App() {
   const [hitNumbers, setHitNumbers] = useState([]);
   const [reSettingMinError, setReSettingMinError] = useState("");
   const [reSettingMaxError, setReSettingMaxError] = useState("");
+  const [drawCount, setDrawCount] = useState(1);
 
   const saveAndRestartConfigArea = (data, hitNumbers) => {
     const newMin = data !== undefined ? data[0].id : resetMin
@@ -132,6 +133,8 @@ function App() {
           setReel={setReel}
           hitNumbers={hitNumbers}
           setHitNumbers={setHitNumbers}
+          drawCount={drawCount}
+          setDrawCount={setDrawCount}
         />
         <HitItemDetails
           currentNumber={currentNumber}
