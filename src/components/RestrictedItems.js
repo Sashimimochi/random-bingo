@@ -1,6 +1,6 @@
 import { Box, FormControl, ListItem, ListItemText, styled, TextField, Typography } from "@mui/material";
 import PropTypes from 'prop-types';
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FixedSizeList } from "react-window";
 
 
@@ -35,22 +35,39 @@ renderRow.propTypes = {
 
 function RestrictedItems(props) {
     const hitNumbers = props.hitNumbers;
-    const data = hitNumbers.map(i => {
-        return (!!props.data && props.data.length >= i) ? props.data[i - 1].name : `No.${i}`;
-    });
+    const data = useMemo(() => {
+        return hitNumbers.map(i => {
+            return (!!props.data && props.data.length >= i) ? props.data[i - 1].name : `No.${i}`;
+        });
+    }, [hitNumbers, props.data]);
     const itemSize = 46;
-    const initItemCount = (!!hitNumbers) ? hitNumbers.length : 200;
 
     const [items, setItems] = useState(data);
-    const [itemCount, setCount] = useState(initItemCount);
+    const [searchKeyword, setSearchKeyword] = useState("");
+
+    // Update items when hitNumbers or data changes (new item sealed by roulette or data updated)
+    useEffect(() => {
+        // Reset search and show all items
+        setSearchKeyword("");
+        setItems(data);
+    }, [hitNumbers, data]);
 
     const filterList = (e) => {
+        const keyword = e.target.value;
+        setSearchKeyword(keyword);
+        
+        // If search box is empty, show all items
+        if (keyword === "") {
+            setItems(data);
+            return;
+        }
+        
+        // Otherwise, filter by keyword using case-insensitive substring match
+        const keywordLower = keyword.toLowerCase();
         const updateList = data.filter((item) => {
-            return item.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+            return item.toLowerCase().includes(keywordLower);
         });
-        const count = (!!updateList) ? updateList.length : 200
         setItems(updateList);
-        setCount(count);
     }
 
     return (
@@ -62,10 +79,15 @@ function RestrictedItems(props) {
                 <br />
                 <div>
                     <CustomForm noValidate autoComplete="off">
-                        <TextField id="standard-basic" label="検索キーワード" onChange={filterList} />
+                        <TextField 
+                            id="standard-basic" 
+                            label="検索キーワード" 
+                            value={searchKeyword}
+                            onChange={filterList} 
+                        />
                     </CustomForm>
                 </div>
-                <FixedSizeList height={400} width={300} itemSize={itemSize} itemCount={itemCount} itemData={items}>
+                <FixedSizeList height={400} width={300} itemSize={itemSize} itemCount={items.length} itemData={items}>
                     {renderRow}
                 </FixedSizeList>
             </CustomBox>
