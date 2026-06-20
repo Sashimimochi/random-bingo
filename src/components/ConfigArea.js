@@ -1,9 +1,10 @@
 import { TextField, Drawer, styled } from "@mui/material";
 import { SaveButton, CloseButton, DownloadButton } from "./Buttons";
 import { UploadForm } from "./ExcelHander";
+import { SheetEditor } from "./SheetEditor";
 
 const CustomDrawer = styled(Drawer)({
-    width: 400
+    width: 720
 })
 
 export const validateMin = (resetMin, setReSettingMinError) => {
@@ -44,6 +45,7 @@ export function ConfigArea(props) {
             variant="persistent"
             anchor="right"
             open={open}
+            PaperProps={{ sx: { width: 720 } }}
         >
             <TextField
                 error={reSettingMinError !== ""}
@@ -73,6 +75,11 @@ export function ConfigArea(props) {
             <DownloadButton
                 data={data}
                 hitNumbers={hitNumbers}
+            />
+            <SheetEditor
+                data={data}
+                hitNumbers={hitNumbers}
+                saveAndRestartConfigArea={saveAndRestartConfigArea}
             />
         </CustomDrawer>
     );
